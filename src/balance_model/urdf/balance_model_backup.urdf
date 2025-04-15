@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<robot name="balance_robot" >
+
+<!-- ROS2 Control 配置 -->
+  <!-- <ros2_control name="balance_control" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      <param name="robot_namespace">/balance_robot</param>
+      <param name="control_period">0.01</param>
+    </hardware>
+    
+    <joint name="joint1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+    <joint name="joint2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+    <joint name="joint3">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint4">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+    <joint name="joint5">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+    </joint>
+    <joint name="joint6">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control> -->
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00112373855262246 0.0372692656695016 -0.00505390752760995"
+        rpy="0 0 0" />
+      <mass
+        value="2.29560503416328" />
+      <inertia
+        ixx="0.0037652524574977"
+        ixy="-8.39163146332236E-06"
+        ixz="1.11177265740483E-07"
+        iyy="0.00998917390732425"
+        iyz="-7.95593211713064E-08"
+        izz="0.00821541688139456" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <link
+    name="thigh1_Link">
+    <inertial>
+      <origin
+        xyz="0.0549739524249132 -0.0633968332145482 -0.0216350771725319"
+        rpy="0 0 0" />
+      <mass
+        value="0.197086182866456" />
+      <inertia
+        ixx="0.00024192170704429"
+        ixy="0.000151596293732481"
+        ixz="2.91895926997022E-11"
+        iyy="0.000195801576678568"
+        iyz="1.66239016445694E-11"
+        izz="0.000431778200595163" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/thigh1_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/thigh1_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint1"
+    type="revolute">
+    <origin
+      xyz="0.054991 0.060002 -0.179"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="thigh1_Link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="4.45"
+      upper="28"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="calf1_Link">
+    <inertial>
+      <origin
+        xyz="-0.128551417489817 -0.0864244138467356 -0.0113562227771212"
+        rpy="0 0 0" />
+      <mass
+        value="0.208436751969881" />
+      <inertia
+        ixx="0.000443077458269161"
+        ixy="-0.000511530679444879"
+        ixz="-1.24664032712872E-19"
+        iyy="0.000858907856856323"
+        iyz="-1.69068272869795E-19"
+        izz="0.00129794093249004" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/calf1_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/calf1_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint2"
+    type="revolute">
+    <origin
+      xyz="0.098406 -0.11321 -0.0508"
+      rpy="-3.1416 0 1.5708" />
+    <parent
+      link="thigh1_Link" />
+    <child
+      link="calf1_Link" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="6.36"
+      upper="33.4"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="wheel1_Link">
+    <inertial>
+      <origin
+        xyz="6.9921761564451E-05 2.23698268498884E-05 0.0251812532778539"
+        rpy="0 0 0" />
+      <mass
+        value="1.27149052423921" />
+      <inertia
+        ixx="0.00354363099249304"
+        ixy="1.46418108962828E-06"
+        ixz="-2.07730661435595E-07"
+        iyy="0.00354550457608862"
+        iyz="2.58120287120464E-07"
+        izz="0.00682215215105163" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/wheel1_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/wheel1_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint3"
+    type="continuous">
+    <origin
+      xyz="-0.19921 -0.13384 0.0502"
+      rpy="3.1416 0 1.5708" />
+    <parent
+      link="calf1_Link" />
+    <child
+      link="wheel1_Link" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="1"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="thigh2_Link">
+    <inertial>
+      <origin
+        xyz="0.0768523512232688 -0.0336792891394732 0.0216350771196192"
+        rpy="0 0 0" />
+      <mass
+        value="0.197086183366415" />
+      <inertia
+        ixx="0.000113935088510005"
+        ixy="0.000111819592475334"
+        ixz="7.18924455660587E-12"
+        iyy="0.000323788195216852"
+        iyz="3.27930467999739E-11"
+        izz="0.00043177820060005" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/thigh2_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/thigh2_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint4"
+    type="revolute">
+    <origin
+      xyz="0.054994 0.059998 0.179"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="thigh2_Link" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="4.45"
+      upper="28"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="calf2_Link">
+    <inertial>
+      <origin
+        xyz="-0.114804441044794 0.103993204411565 -0.0113562227771211"
+        rpy="0 0 0" />
+      <mass
+        value="0.208436751969882" />
+      <inertia
+        ixx="0.000596031088521595"
+        ixy="0.000549428423035399"
+        ixz="-1.25010431572427E-19"
+        iyy="0.000705954226603891"
+        iyz="3.43208632223762E-20"
+        izz="0.00129794093249004" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/calf2_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/calf2_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint5"
+    type="revolute">
+    <origin
+      xyz="0.13731 -0.06037 0.0523"
+      rpy="0 0 1.5708" />
+    <parent
+      link="thigh2_Link" />
+    <child
+      link="calf2_Link" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="6.36"
+      upper="33.4"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="wheel2_Link">
+    <inertial>
+      <origin
+        xyz="-4.31229370099484E-05 -5.94127449699833E-05 0.0251812532780945"
+        rpy="0 0 0" />
+      <mass
+        value="1.27149052423921" />
+      <inertia
+        ixx="0.00354289024620187"
+        ixy="-4.55270354534913E-07"
+        ixz="3.20206228643419E-07"
+        iyy="0.00354624532237979"
+        iyz="-8.51239183141634E-08"
+        izz="0.00682215215105163" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/wheel2_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/home/emopointer/simulation_ws/src/balance_model/meshes/wheel2_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint6"
+    type="continuous">
+    <origin
+      xyz="-0.177825913114533 0.161176749639925 0.0502000000001869"
+      rpy="3.14159265358979 0 1.5707963267949" />
+    <parent
+      link="calf2_Link" />
+    <child
+      link="wheel2_Link" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="1"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>
