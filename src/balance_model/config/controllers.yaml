@@ -1,0 +1,30 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # 单位 Hz
+    use_sim_time: true
+
+    # 必须添加的全局参数：声明要加载的控制器列表
+    active_controllers: ["joint_state_broadcaster", "joint_controller", "wheel_controller"]
+    # 必须添加的全局参数：声明需要停止的控制器列表（若无需停止则留空）
+    inactive_controllers: []
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_controller:
+      type: position_controllers/JointGroupPositionController
+      joints:
+        - joint1
+        - joint2
+        - joint4
+        - joint5
+      # 必须添加的接口类型声明
+      interface_name: position
+
+    wheel_controller:
+      type: velocity_controllers/JointGroupVelocityController
+      joints:
+        - joint3
+        - joint6
+      # 必须添加的接口类型声明
+      interface_name: velocity

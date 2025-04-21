@@ -1,7 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="balance_robot">
 
+  <xacro:include filename="balance_control.xacro"/>
+
   <xacro:property name="mesh_path" value="/home/emopointer/simulation_ws/src/balance_model/meshes"/>
+  <!-- gazebo -->
+  <!-- <xacro:property name="mesh_path" value="package://balance_model/meshes"/> -->
+  <!-- rviz -->
 
   <!-- macro -->
   <xacro:macro name="visual_and_collision" params="link_name mesh_file color">
@@ -19,27 +24,6 @@
       </geometry>
     </collision>
   </xacro:macro>
-
-  <!-- ROS2 Control -->
-  <ros2_control name="balance_control" type="system">
-    <hardware>
-      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-      <param name="robot_namespace">/balance_robot</param>
-      <param name="control_period">0.01</param>
-    </hardware>
-    <joint name="joint1"><command_interface name="position"/><command_interface name="effort"/>
-        <state_interface name="position"/><state_interface name="effort"/></joint>
-    <joint name="joint2"><command_interface name="position"/><command_interface name="effort"/>
-        <state_interface name="position"/><state_interface name="effort"/></joint>
-    <joint name="joint3"><command_interface name="velocity"/><command_interface name="effort"/>
-        <state_interface name="velocity"/><state_interface name="effort"/></joint>
-    <joint name="joint4"><command_interface name="position"/><command_interface name="effort"/>
-        <state_interface name="position"/><state_interface name="effort"/></joint>
-    <joint name="joint5"><command_interface name="position"/><command_interface name="effort"/>
-        <state_interface name="position"/><state_interface name="effort"/></joint>
-    <joint name="joint6"><command_interface name="velocity"/><command_interface name="effort"/>
-        <state_interface name="velocity"/><state_interface name="effort"/></joint>
-  </ros2_control>
 
   <!-- 各个link -->
   <link name="base_link">
@@ -113,6 +97,7 @@
     <parent link="base_link"/>
     <child link="thigh1_Link"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.5"/>
     <limit lower="4.45" upper="7.39" effort="10" velocity="10"/>
   </joint>
 
@@ -121,6 +106,7 @@
     <parent link="thigh1_Link"/>
     <child link="calf1_Link"/>
     <axis xyz="0 0 -1"/>
+    <dynamics damping="0.5"/>
     <limit lower="5" upper="8.96" effort="10" velocity="10"/>
   </joint>
 
@@ -129,6 +115,7 @@
     <parent link="calf1_Link"/>
     <child link="wheel1_Link"/>
     <axis xyz="0 0 -1"/>
+    <dynamics damping="0.5"/>
   </joint>
 
   <joint name="joint4" type="revolute">
@@ -136,6 +123,7 @@
     <parent link="base_link"/>
     <child link="thigh2_Link"/>
     <axis xyz="0 0 1"/>
+    <dynamics damping="0.5"/>
     <limit lower="3.81" upper="7.17" effort="10" velocity="10"/>
   </joint>
 
@@ -144,6 +132,7 @@
     <parent link="thigh2_Link"/>
     <child link="calf2_Link"/>
     <axis xyz="0 0 -1"/>
+    <dynamics damping="0.5"/>
     <limit lower="-3.36" upper="0.63" effort="10" velocity="10"/>
   </joint>
 
@@ -152,26 +141,7 @@
     <parent link="calf2_Link"/>
     <child link="wheel2_Link"/>
     <axis xyz="0 0 -1"/>
+    <dynamics damping="0.5"/>
   </joint>
-
-  <!-- Gazebo 插件 -->
-  <gazebo>
-    <plugin filename="libgazebo_ros2_control.so" name="ros2_control">
-      <parameters>$(find balance_model)/config/controllers.yaml</parameters>
-      <controller_manager_node_name>controller_manager</controller_manager_node_name>
-    </plugin>
-
-    <sensor name="imu_sensor" type="imu">
-      <always_on>true</always_on>
-      <update_rate>100</update_rate>
-      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <ros>
-          <qos>reliable</qos>
-          <namespace>/balance_robot</namespace>
-        </ros>
-        <frame_name>imu_link</frame_name>
-      </plugin>
-    </sensor>
-  </gazebo>
-
+  <xacro:balance_ros2_control/>
 </robot>

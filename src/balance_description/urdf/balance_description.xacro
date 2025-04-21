@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="balance_robot" >
+        <!-- <xacro:property name="mesh_path" value="/home/emopointer/simulation_ws/src/balance_description/meshes"/> -->
+        <!-- gazebo -->
+        <xacro:property name="mesh_path" value="package://balance_description/meshes"/>
+        <!-- rviz -->
+
+        <!-- macro -->
+        <xacro:macro name="visual_and_collision" params="link_name mesh_file color">
+            <visual>
+            <geometry>
+                <mesh filename="${mesh_path}/${mesh_file}"/>
+            </geometry>
+            <material name="${color}">
+                <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+            </visual>
+            <collision>
+            <geometry>
+                <mesh filename="${mesh_path}/${mesh_file}"/>
+            </geometry>
+            </collision>
+        </xacro:macro>
+
+        <!-- 各个link -->
+        <link name="base_link">
+            <inertial>
+            <origin xyz="-0.00112 0.03727 -0.00505" rpy="0 0 0"/>
+            <mass value="2.2956"/>
+            <!-- mass kg -->
+            <inertia ixx="0.003765" ixy="-8.39e-6" ixz="1.11e-7" iyy="0.009989" iyz="-7.96e-8" izz="0.008215"/>
+            <!-- mass martrix -->
+            </inertial>
+            <xacro:visual_and_collision link_name="base_link" mesh_file="base_link.STL" color="silver"/>
+        </link>
+
+        <link name="thigh1_Link">
+            <inertial>
+            <origin xyz="0.055 -0.0634 -0.0216" rpy="0 0 0"/>
+            <mass value="0.1971"/>
+            <inertia ixx="0.000242" ixy="0.000152" ixz="0" iyy="0.000196" iyz="0" izz="0.000432"/>
+            </inertial>
+            <xacro:visual_and_collision link_name="thigh1_Link" mesh_file="thigh1_Link.STL" color="blue"/>
+        </link>
+
+        <link name="calf1_Link">
+            <inertial>
+            <origin xyz="-0.129 -0.0864 -0.0114" rpy="0 0 0"/>
+            <mass value="0.2084"/>
+            <inertia ixx="0.000443" ixy="-0.000512" ixz="0" iyy="0.000859" iyz="0" izz="0.001298"/>
+            </inertial>
+            <xacro:visual_and_collision link_name="calf1_Link" mesh_file="calf1_Link.STL" color="silver"/>
+        </link>
+
+        <link name="wheel1_Link">
+            <inertial>
+            <origin xyz="0 0 0.025" rpy="0 0 0"/>
+            <mass value="1.2715"/>
+            <inertia ixx="0.00354" ixy="0" ixz="0" iyy="0.00354" iyz="0" izz="0.00682"/>
+            </inertial>
+            <xacro:visual_and_collision link_name="wheel1_Link" mesh_file="wheel1_Link.STL" color="red"/>
+        </link>
+
+        <link name="thigh2_Link">
+            <inertial>
+            <origin xyz="0.0769 -0.0337 0.0216" rpy="0 0 0"/>
+            <mass value="0.1971"/>
+            <inertia ixx="0.000114" ixy="0.000112" ixz="0" iyy="0.000324" iyz="0" izz="0.000432"/>
+            </inertial>
+            <xacro:visual_and_collision link_name="thigh2_Link" mesh_file="thigh2_Link.STL" color="blue"/>
+        </link>
+
+        <link name="calf2_Link">
+            <inertial>
+            <origin xyz="-0.115 0.104 -0.0114" rpy="0 0 0"/>
+            <mass value="0.2084"/>
+            <inertia ixx="0.000596" ixy="0.000549" ixz="0" iyy="0.000706" iyz="0" izz="0.001298"/>
+            </inertial>
+            <xacro:visual_and_collision link_name="calf2_Link" mesh_file="calf2_Link.STL" color="silver"/>
+        </link>
+
+        <link name="wheel2_Link">
+            <inertial>
+            <origin xyz="0 0 0.025" rpy="0 0 0"/>
+            <mass value="1.2715"/>
+            <inertia ixx="0.00354" ixy="0" ixz="0" iyy="0.00354" iyz="0" izz="0.00682"/>
+            </inertial>
+            <xacro:visual_and_collision link_name="wheel2_Link" mesh_file="wheel2_Link.STL" color="red"/>
+        </link>
+
+        <!-- joints -->
+        <joint name="joint1" type="revolute">
+            <origin xyz="0.055 0.060 -0.179" rpy="0 0 0"/>
+            <parent link="base_link"/>
+            <child link="thigh1_Link"/>
+            <axis xyz="0 0 1"/>
+            <dynamics damping="0.5"/>
+            <limit lower="4.45" upper="7.39" effort="10" velocity="10"/>
+        </joint>
+
+        <joint name="joint2" type="revolute">
+            <origin xyz="0.0984 -0.1132 -0.0508" rpy="-3.1416 0 1.5708"/>
+            <parent link="thigh1_Link"/>
+            <child link="calf1_Link"/>
+            <axis xyz="0 0 -1"/>
+            <dynamics damping="0.5"/>
+            <limit lower="5" upper="8.96" effort="10" velocity="10"/>
+        </joint>
+
+        <joint name="joint3" type="continuous">
+            <origin xyz="-0.1992 -0.1338 0.0502" rpy="3.1416 0 1.5708"/>
+            <parent link="calf1_Link"/>
+            <child link="wheel1_Link"/>
+            <axis xyz="0 0 -1"/>
+            <dynamics damping="0.5"/>
+        </joint>
+
+        <joint name="joint4" type="revolute">
+            <origin xyz="0.055 0.060 0.179" rpy="0 0 0"/>
+            <parent link="base_link"/>
+            <child link="thigh2_Link"/>
+            <axis xyz="0 0 1"/>
+            <dynamics damping="0.5"/>
+            <limit lower="3.81" upper="7.17" effort="10" velocity="10"/>
+        </joint>
+
+        <joint name="joint5" type="revolute">
+            <origin xyz="0.1373 -0.0604 0.0523" rpy="0 0 1.5708"/>
+            <parent link="thigh2_Link"/>
+            <child link="calf2_Link"/>
+            <axis xyz="0 0 -1"/>
+            <dynamics damping="0.5"/>
+            <limit lower="-3.36" upper="0.63" effort="10" velocity="10"/>
+        </joint>
+
+        <joint name="joint6" type="continuous">
+            <origin xyz="-0.1778 0.1612 0.0502" rpy="3.1416 0 1.5708"/>
+            <parent link="calf2_Link"/>
+            <child link="wheel2_Link"/>
+            <axis xyz="0 0 -1"/>
+            <dynamics damping="0.5"/>
+        </joint>
+    </xacro:macro>
+</robot>

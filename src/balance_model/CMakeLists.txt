@@ -9,6 +9,8 @@ set(RESOURCE_DIRS
     launch
     meshes
     urdf
+    rviz
+    map
 )
 
 foreach(dir ${RESOURCE_DIRS})

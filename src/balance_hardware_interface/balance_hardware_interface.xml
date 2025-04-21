@@ -1,0 +1,9 @@
+<library path="balance_hardware_interface">
+  <class name="balance_hardware_interface/BalanceHardwareInterface"
+         type="balance_hardware_interface::BalanceHardwareInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface.
+    </description>
+  </class>
+</library>

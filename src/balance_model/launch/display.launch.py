@@ -1,21 +1,17 @@
 import os
 
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.conditions import IfCondition
+from launch.event_handlers import OnProcessExit
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
+
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-def generate_launch_description():
-    package_name = 'balance_model'
-    urdf_file = 'balance_model.urdf'
 
-    urdf_path = PathJoinSubstitution([
-        FindPackageShare(package_name),
-        'urdf',
-        urdf_file
-    ])
+def generate_launch_description():
+    declared_arguments = []
 
     rviz_config_path = PathJoinSubstitution([
         '/home/emopointer/simulation_ws/src/balance_model',
@@ -23,29 +19,89 @@ def generate_launch_description():
         'balance_display.rviz'
     ])
 
-    return LaunchDescription([
-        Node(
-            package='joint_state_publisher_gui',
-            executable='joint_state_publisher_gui',
-            name='joint_state_publisher',
-            output='screen'
-        ),
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "description_package",
+            default_value="balance_model",
+            description="Description package with robot URDF/xacro files. Usually the argument \
+        is not set, it enables use of a custom description.",
+        )
+    )
 
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            parameters=[{
-                'robot_description': Command(['cat ', urdf_path])
-            }],
-            output='screen'
-        ),
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "description_file",
+            default_value="balance_model.xacro",
+            description="URDF/XACRO description file with the robot.",
+        )
+    )
 
-        Node(
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            arguments=['-d', rviz_config_path],
-            output='screen'
-        ),
-    ])
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "gui",
+            default_value="true",
+            description="Start Rviz2 and Joint State Publisher gui automatically \
+        with this launch file.",
+        )
+    )
+
+    description_package = LaunchConfiguration("description_package")
+    description_file = LaunchConfiguration("description_file")
+    gui = LaunchConfiguration("gui")
+
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [FindPackageShare(description_package), "urdf", description_file]
+            ),
+        ]
+    )
+
+    robot_description = {"robot_description": robot_description_content}
+
+    joint_state_publisher_node = Node(
+        package="joint_state_publisher_gui",
+        executable="joint_state_publisher_gui",
+        condition=IfCondition(gui),
+    )
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="both",
+        parameters=[robot_description],
+    )
+
+    # controller_node = Node(
+    #                 package="controller_manager",
+    #                 executable="ros2_control_node",
+    #                 parameters=[
+    #                     robot_description,
+    #                     PathJoinSubstitution([
+    #                         FindPackageShare("balance_model"),
+    #                         "config",
+    #                         "controllers.yaml"
+    #                     ])
+    #                 ],
+    #                 output="screen"
+    #             )
+
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        arguments=['-d', rviz_config_path],
+        output="log",
+        condition=IfCondition(gui),
+    )
+
+    nodes = [
+        joint_state_publisher_node,
+        robot_state_publisher_node,
+        # controller_node,
+        # rviz_node,
+    ]
+
+    # Launch!
+    return LaunchDescription(declared_arguments + nodes)

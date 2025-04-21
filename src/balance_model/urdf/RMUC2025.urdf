@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot name="static_map">
+
+  <!-- 定义世界坐标系虚拟链接 -->
+  <link name="world">
+    <!-- 静态链接必须定义惯性参数 -->
+    <inertial>
+      <mass value="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+  </link>
+
+  <!-- 地图实体链接 -->
+  <link name="map_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://balance_model/meshes/RMUC2025.STL"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <geometry>
+        <mesh filename="package://balance_model/meshes/RMUC2025.STL"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+  </link>
+
+  <!-- 将地图固定到世界坐标系 -->
+  <joint name="map_joint" type="fixed">
+    <parent link="world"/>
+    <child link="map_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Gazebo 特定配置 -->
+  <gazebo reference="map_link">
+    <static>true</static>
+    <material>Gazebo/Grey</material>
+    <!-- 优化物理参数 -->
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <mu1>100.0</mu1>
+    <mu2>100.0</mu2>
+  </gazebo>
+
+  <!-- 世界链接的 Gazebo 配置 -->
+  <gazebo reference="world">
+    <static>true</static>
+  </gazebo>
+
+</robot>

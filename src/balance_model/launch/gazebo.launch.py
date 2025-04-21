@@ -1,76 +1,91 @@
+import os
+
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
+
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-def generate_launch_description():
-    package_name = 'balance_model'
-    
-    pkg_path = FindPackageShare(package=package_name)
-    xacro_path = PathJoinSubstitution([pkg_path, 'urdf', 'balance_model.xacro'])
 
-    # 将 XACRO 转换为 URDF
-    robot_description_content = Command(
-        [PathJoinSubstitution([FindExecutable(name='xacro')]), ' ', xacro_path]
+def generate_launch_description():
+    declared_arguments = []
+
+    rviz_config_path = PathJoinSubstitution([
+        '/home/emopointer/simulation_ws/src/balance_model',
+        'rviz',
+        'balance_display.rviz'
+    ])
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "description_package",
+            default_value="balance_model",
+            description="Description package with robot URDF/xacro files. Usually the argument \
+        is not set, it enables use of a custom description.",
+        )
     )
 
-    return LaunchDescription([
-        ExecuteProcess(
-            cmd=['ros2', 'param', 'set', '/gazebo', 'use_sim_time', 'True'],
-            output='screen'
-        ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('gazebo_ros'),
-                    'launch', 'gazebo.launch.py'
-                ])
-            ]),
-            launch_arguments={'world': 'empty'}.items()
-        ),
-
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[{
-                'use_sim_time': True,
-                'robot_description': robot_description_content
-            }]
-        ),
-
-        # Node(
-        #     package='joint_state_publisher',
-        #     executable='joint_state_publisher',
-        #     name='joint_state_publisher',
-        #     parameters=[{'use_sim_time': True}]
-        # ),
-
-        # 删除可能存在的旧实体
-        ExecuteProcess(
-            cmd=['ros2', 'service', 'call', '/delete_entity', 'gazebo_msgs/srv/DeleteEntity',
-                 '{name: "balance_model"}'],
-            output='screen',
-            # 忽略删除失败的错误
-            on_exit=Node(
-                package='gazebo_ros',
-                executable='spawn_entity.py',
-                arguments=[
-                    '-entity', 'balance_model',
-                    '-topic', 'robot_description',
-                    '-x', '0.0',
-                    '-y', '0.0',
-                    '-z', '0.6',
-                    '-Y', '0.0'
-                ],
-                output='screen'
-            )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "description_file",
+            default_value="balance_model.xacro",
+            description="URDF/XACRO description file with the robot.",
         )
+    )
 
-        
-    ])
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "gui",
+            default_value="true",
+            description="Start Rviz2 and Joint State Publisher gui automatically \
+        with this launch file.",
+        )
+    )
+
+    description_package = LaunchConfiguration("description_package")
+    description_file = LaunchConfiguration("description_file")
+    gui = LaunchConfiguration("gui")
+
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [FindPackageShare(description_package), "urdf", description_file]
+            ),
+        ]
+    )
+
+    robot_description = {"robot_description": robot_description_content}
+
+    joint_state_publisher_node = Node(
+        package="joint_state_publisher_gui",
+        executable="joint_state_publisher_gui",
+        condition=IfCondition(gui),
+    )
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="both",
+        parameters=[robot_description],
+    )
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        arguments=['-d', rviz_config_path],
+        output="log",
+        condition=IfCondition(gui),
+    )
+
+    nodes = [
+        joint_state_publisher_node,
+        robot_state_publisher_node,
+        rviz_node,
+    ]
+
+    # Launch!
+    return LaunchDescription(declared_arguments + nodes)

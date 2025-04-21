@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="balance_ros2_control">
+            <!-- ROS2 Control -->
+        <ros2_control name="balance_control" type="system">
+            <hardware>
+            <plugin>balance_hardware_interface/BalanceHardwareInterface</plugin>
+            </hardware>
+
+            <joint name="joint1">
+                <command_interface name="position"/>
+                <!-- <command_interface name="effort"/> -->
+
+                <state_interface name="position"/>
+                <!-- <state_interface name="effort"/> -->
+                <param name="initial_position">0.0</param>
+            </joint>
+
+            <joint name="joint2">
+                <command_interface name="position"/>
+                <!-- <command_interface name="effort"/> -->
+
+                <state_interface name="position"/>
+                <!-- <state_interface name="effort"/> -->
+                <param name="initial_position">0.0</param>
+            </joint>
+
+            <joint name="joint3">
+                <command_interface name="position"/>
+                <!-- <command_interface name="velocity"/> -->
+                <!-- <command_interface name="effort"/> -->
+
+                <state_interface name="position"/>
+                <!-- <state_interface name="velocity"/> -->
+                <!-- <state_interface name="effort"/> -->
+                <param name="initial_position">0.0</param>
+            </joint>
+
+            <joint name="joint4">
+                <command_interface name="position"/>
+                <!-- <command_interface name="effort"/> -->
+
+                <state_interface name="position"/>
+                <!-- <state_interface name="effort"/> -->
+                <param name="initial_position">0.0</param>
+            </joint>
+
+            <joint name="joint5">
+                <command_interface name="position"/>
+                <!-- <command_interface name="effort"/> -->
+
+                <state_interface name="position"/>
+                <!-- <state_interface name="effort"/> -->
+                <param name="initial_position">0.0</param>
+            </joint>
+
+            <joint name="joint6">
+                <command_interface name="position"/>
+                <!-- <command_interface name="velocity"/> -->
+                <!-- <command_interface name="effort"/> -->
+
+                <state_interface name="position"/>
+                <!-- <state_interface name="velocity"/> -->
+                <!-- <state_interface name="effort"/> -->
+                <param name="initial_position">0.0</param>
+            </joint>
+        </ros2_control>
+
+            <!-- Gazebo 插件 -->
+        <!-- <gazebo>
+            <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find balance_description)/config/controller.yaml</parameters>
+            </plugin>
+        </gazebo> -->
+
+    </xacro:macro>
+</robot>
