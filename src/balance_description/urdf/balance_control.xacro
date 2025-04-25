@@ -5,7 +5,8 @@
             <!-- ROS2 Control -->
         <ros2_control name="balance_control" type="system">
             <hardware>
-            <plugin>balance_hardware_interface/BalanceHardwareInterface</plugin>
+            <!-- <plugin>balance_hardware_interface/BalanceHardwareInterface</plugin> -->
+            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
             </hardware>
 
             <joint name="joint1">
@@ -14,7 +15,7 @@
 
                 <state_interface name="position"/>
                 <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">0.0</param>
+                <param name="initial_position">6.2</param>
             </joint>
 
             <joint name="joint2">
@@ -43,7 +44,7 @@
 
                 <state_interface name="position"/>
                 <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">0.0</param>
+                <param name="initial_position">6.2</param>
             </joint>
 
             <joint name="joint5">
@@ -68,11 +69,11 @@
         </ros2_control>
 
             <!-- Gazebo 插件 -->
-        <!-- <gazebo>
+        <gazebo>
             <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
             <parameters>$(find balance_description)/config/controller.yaml</parameters>
             </plugin>
-        </gazebo> -->
+        </gazebo>
 
     </xacro:macro>
 </robot>

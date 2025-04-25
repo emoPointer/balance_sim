@@ -18,10 +18,3 @@ forward_position_controller:                  # delete entry if controller is no
       - joint5
       - joint6
     interface_name: position
-
-forward_velocity_controller:                  # delete entry if controller is not applicable
-  ros__parameters:
-    joints:
-      - joint3
-      - joint6
-    interface_name: velocity
