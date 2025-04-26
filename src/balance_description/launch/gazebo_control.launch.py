@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription,TimerAction,ExecuteProcess
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
@@ -14,7 +14,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "gui_rviz",
-            default_value="false",
+            default_value="true",
             description="Start RViz2 automatically with this launch file.",
         )
     )
@@ -36,7 +36,7 @@ def generate_launch_description():
         [PathJoinSubstitution([FindPackageShare("gazebo_ros"), "launch", "gazebo.launch.py"])]
     ),
     launch_arguments={
-        "verbose": "false",
+        "verbose": "true",
         "gui": gui_gazebo
     }.items(),
     )
@@ -71,7 +71,7 @@ def generate_launch_description():
         arguments=[
             "-topic", "robot_description",
             "-entity", "balance",
-            "-x", "0.0", "-y", "0.0", "-z", "0.5","-Y", "0"
+            "-x", "0.0", "-y", "0.0", "-z", "0.5","-Y", "0.0"
         ],
         output="screen",
     )
@@ -87,6 +87,22 @@ def generate_launch_description():
         executable="spawner",
         arguments=["forward_position_controller", "--controller-manager", "/controller_manager"],
     )
+
+    initial_command_publisher = TimerAction(
+        period=5.0,
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    "ros2", "topic", "pub", "--once",
+                    "/forward_position_controller/commands",
+                    "std_msgs/msg/Float64MultiArray",
+                    '"{data: [6.6, 5.8, 0.0, 6.2, 0.2, 0.0]}"'
+                ],
+                shell=True
+            )
+        ]
+    )
+
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -102,6 +118,7 @@ def generate_launch_description():
         spawn_entity,
         joint_state_broadcaster_spawner,
         robot_controller_spawner,
+        initial_command_publisher,
         rviz_node,
     ]
 

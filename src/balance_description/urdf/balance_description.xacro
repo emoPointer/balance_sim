@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:macro name="balance_robot" >
-        <xacro:property name="mesh_path" value="/home/emopointer/simulation_ws/src/balance_description/meshes"/>
-        <!-- gazebo -->
-        <!-- <xacro:property name="mesh_path" value="package://balance_description/meshes"/> -->
-        <!-- rviz -->
+        <xacro:property name="mesh_path" value="file://$(find balance_description)/meshes"/>
+        <!-- <xacro:property name="mesh_path" value="../meshes"/> -->
 
         <!-- macro -->
         <xacro:macro name="visual_and_collision" params="link_name mesh_file color xyz rpy">
@@ -110,8 +108,8 @@
                 upper="7.39"
                 effort="0"
                 velocity="0" />
-            <dynamics damping="0.5"/>
-            <initial_position>6.2</initial_position>
+            <dynamics damping="1"/>
+            <!-- <initial_position>6.2</initial_position> -->
         </joint>
 
         <joint
@@ -131,8 +129,8 @@
                 upper="6.74"
                 effort="0"
                 velocity="0" />
-            <dynamics damping="0.5"/>
-            <initial_position>0</initial_position>
+            <dynamics damping="1"/>
+            <!-- <initial_position>5.5</initial_position> -->
         </joint>
 
         <joint
@@ -152,8 +150,8 @@
                 upper="0"
                 effort="0"
                 velocity="0" />
-            <dynamics damping="0.5"/>
-            <initial_position>0</initial_position>
+            <dynamics damping="1"/>
+            <!-- <initial_position>0</initial_position> -->
         </joint>
 
         <joint
@@ -173,8 +171,8 @@
                 upper="6.95"
                 effort="0"
                 velocity="0" />
-            <dynamics damping="0.5"/>
-            <initial_position>6.2</initial_position>
+            <dynamics damping="1"/>
+            <!-- <initial_position>6.2</initial_position> -->
         </joint>
 
         <joint
@@ -194,8 +192,8 @@
                 upper="1.06"
                 effort="0"
                 velocity="0" />
-            <dynamics damping="0.5"/>
-            <initial_position>0</initial_position>
+            <dynamics damping="1"/>
+            <!-- <initial_position>0</initial_position> -->
         </joint>
 
         <joint
@@ -215,8 +213,8 @@
                 upper="0"
                 effort="0"
                 velocity="0" />
-            <dynamics damping="0.5"/>
-            <initial_position>0</initial_position>
+            <dynamics damping="1"/>
+            <!-- <initial_position>0</initial_position> -->
         </joint>
     </xacro:macro>
 </robot>

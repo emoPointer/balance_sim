@@ -224,8 +224,8 @@ def generate_launch_description():
             robot_state_pub_node,
             rviz_node,
             delay_joint_state_broadcaster_spawner_after_ros2_control_node,
-            # gazebo,
-            # gazebo_spawn_robot,
+            gazebo,
+            gazebo_spawn_robot,
         ]
         + delay_robot_controller_spawners_after_joint_state_broadcaster_spawner
    )
