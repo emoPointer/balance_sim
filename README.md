@@ -13,6 +13,10 @@ rviz查看机器人模型
 
 启动自己的接口，需要将`balance_control.xacro`的硬件插件改为自己写的，并且注释下面`gazebo`的插件
 
+`ros2 launch balance_description import_gazebo.launch.py `
+
+将模型导入gazebo中
+
 `pkill -9 gzclient` `pkill -9 gzserver`杀`gazebo`
 
 ## 问题
