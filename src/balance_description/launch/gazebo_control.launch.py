@@ -14,7 +14,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "gui_rviz",
-            default_value="true",
+            default_value="false",
             description="Start RViz2 automatically with this launch file.",
         )
     )
@@ -36,7 +36,7 @@ def generate_launch_description():
         [PathJoinSubstitution([FindPackageShare("gazebo_ros"), "launch", "gazebo.launch.py"])]
     ),
     launch_arguments={
-        "verbose": "true",
+        "verbose": "false",
         "gui": gui_gazebo
     }.items(),
     )
@@ -71,7 +71,7 @@ def generate_launch_description():
         arguments=[
             "-topic", "robot_description",
             "-entity", "balance",
-            "-x", "0.0", "-y", "0.0", "-z", "0.5","-Y", "0.0"
+            "-x", "0.0", "-y", "0.0", "-z", "0.3","-Y", "0.0"
         ],
         output="screen",
     )
@@ -118,7 +118,7 @@ def generate_launch_description():
         spawn_entity,
         joint_state_broadcaster_spawner,
         robot_controller_spawner,
-        initial_command_publisher,
+        # initial_command_publisher,
         rviz_node,
     ]
 

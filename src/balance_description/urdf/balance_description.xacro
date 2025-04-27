@@ -90,6 +90,16 @@
             <xacro:visual_and_collision link_name="wheel2_Link" mesh_file="wheel2_Link.STL" color="red" xyz="0 0 0" rpy="0 0 0"/>
         </link>
 
+        <!-- <link name="imu_link">
+            <inertial>
+            <origin xyz="-0.00112 0.03727 -0.00505" rpy="0 0 0"/>
+            <mass value="2.2956"/>
+            <inertia ixx="0.003765" ixy="-8.39e-6" ixz="1.11e-7" iyy="0.009989" iyz="-7.96e-8" izz="0.008215"/>
+            </inertial>
+            <xacro:visual_and_collision link_name="base_link" mesh_file="base_link.STL" color="silver" 
+                xyz="0 0 0" rpy="1.57 0 3.14"/>
+        </link> -->
+
         <!-- joints -->
         <joint
             name="joint1"
@@ -104,12 +114,12 @@
             <axis
                 xyz="0 0 1" />
             <limit
-                lower="5.9"
-                upper="7.39"
-                effort="0"
-                velocity="0" />
+                lower="-0.38"
+                upper="1.11"
+                effort="23"
+                velocity="30" />
             <dynamics damping="1"/>
-            <!-- <initial_position>6.2</initial_position> -->
+            <initial_position>0.0</initial_position>
         </joint>
 
         <joint
@@ -125,12 +135,12 @@
             <axis
                 xyz="0 0 -1" />
             <limit
-                lower="5"
-                upper="6.74"
-                effort="0"
-                velocity="0" />
+                lower="-1.28"
+                upper="0.46"
+                effort="23"
+                velocity="30" />
             <dynamics damping="1"/>
-            <!-- <initial_position>5.5</initial_position> -->
+            <initial_position>0.0</initial_position>
         </joint>
 
         <joint
@@ -146,12 +156,10 @@
             <axis
                 xyz="0 0 -1" />
             <limit
-                lower="0"
-                upper="0"
-                effort="0"
-                velocity="0" />
+                effort="27"
+                velocity="30" />
             <dynamics damping="1"/>
-            <!-- <initial_position>0</initial_position> -->
+            <initial_position>0.0</initial_position>
         </joint>
 
         <joint
@@ -167,12 +175,12 @@
             <axis
                 xyz="0 0 1" />
             <limit
-                lower="5.45"
-                upper="6.95"
-                effort="0"
-                velocity="0" />
+                lower="-0.83"
+                upper="0.67"
+                effort="27"
+                velocity="30" />
             <dynamics damping="1"/>
-            <!-- <initial_position>6.2</initial_position> -->
+            <initial_position>0.0</initial_position>
         </joint>
 
         <joint
@@ -190,10 +198,10 @@
             <limit
                 lower="-0.68"
                 upper="1.06"
-                effort="0"
-                velocity="0" />
+                effort="27"
+                velocity="30" />
             <dynamics damping="1"/>
-            <!-- <initial_position>0</initial_position> -->
+            <initial_position>0.0</initial_position>
         </joint>
 
         <joint
@@ -209,12 +217,10 @@
             <axis
                 xyz="0 0 1" />
             <limit
-                lower="0"
-                upper="0"
-                effort="0"
-                velocity="0" />
+                effort="27"
+                velocity="30" />
             <dynamics damping="1"/>
-            <!-- <initial_position>0</initial_position> -->
+            <initial_position>0.0</initial_position>
         </joint>
     </xacro:macro>
 </robot>

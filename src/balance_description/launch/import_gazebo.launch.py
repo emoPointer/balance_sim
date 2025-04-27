@@ -44,7 +44,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("balance_description"), "urdf", "go1.urdf"]
+                [FindPackageShare("balance_description"), "urdf", "balance.xacro"]
             ),
             " ",
             # "use_gazebo_classic:=true",
@@ -70,8 +70,8 @@ def generate_launch_description():
         name="joint_state_publisher_gui",
         output="screen",
         parameters=[{
-            "use_gui": True,  # 可选，其实gui版本默认就是True
-            "rate": 30.0,     # 可选，更新频率
+            "use_gui": True,
+            "rate": 30.0,
         }]
 )
 
@@ -81,7 +81,7 @@ def generate_launch_description():
         arguments=[
             "-topic", "robot_description",
             "-entity", "balance",
-            "-x", "0.0", "-y", "0.0", "-z", "0.5","-Y", "0.0"
+            "-x", "0.0", "-y", "0.0", "-z", "0.3","-Y", "0.0"
         ],
         output="screen",
     )
@@ -91,7 +91,7 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
-        # arguments=["-d", rviz_config_file],
+        arguments=["-d", rviz_config_file],
         condition=IfCondition(gui_rviz),
     )
 

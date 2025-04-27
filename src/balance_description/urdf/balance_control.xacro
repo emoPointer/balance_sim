@@ -9,13 +9,97 @@
             <plugin>gazebo_ros2_control/GazeboSystem</plugin>
             </hardware>
 
+            <!-- <gazebo>
+                <plugin name="3dplot" filename="libLinkPlot3DPlugin.so">
+                    <frequency>10</frequency>
+                    <plot>
+                        <link>base_link</link>
+                        <pose>0 0 0 0 0 0</pose>
+                        <material>Gazebo/Yellow</material>
+                    </plot>
+                </plugin>
+            </gazebo> -->
+
+            <!-- <gazebo reference="imu_link">
+                <gravity>true</gravity>
+                <sensor name="imu_sensor" type="imu">
+                    <always_on>true</always_on>
+                    <update_rate>1000</update_rate>
+                    <visualize>true</visualize>
+                    <topic>__default_topic__</topic>
+                    <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+                        <topicName>trunk_imu</topicName>
+                        <bodyName>imu_link</bodyName>
+                        <updateRateHZ>1000.0</updateRateHZ>
+                        <gaussianNoise>0.0</gaussianNoise>
+                        <xyzOffset>0 0 0</xyzOffset>
+                        <rpyOffset>0 0 0</rpyOffset>
+                        <frameName>imu_link</frameName>
+                    </plugin>
+                    <pose>0 0 0 0 0 0</pose>
+                </sensor>
+            </gazebo> -->
+
+            <gazebo>
+                <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+                <parameters>$(find balance_description)/config/controller.yaml</parameters>
+                </plugin>
+            </gazebo>
+
+            <gazebo reference="base_link">
+                <material>Gazebo/Green</material>
+                <turnGravityOff>false</turnGravityOff>
+            </gazebo>
+
+            <gazebo reference="thigh1_Link">
+                <mu1>0.2</mu1>
+                <mu2>0.2</mu2>
+                <kp  value="1000000.0"/>
+                <kd  value="1.0"/>
+            </gazebo>
+
+            <gazebo reference="calf1_Link">
+                <mu1>0.2</mu1>
+                <mu2>0.2</mu2>
+                <kp  value="1000000.0"/>
+                <kd  value="1.0"/>
+            </gazebo>
+
+            <gazebo reference="wheel1_Link">
+                <mu1>0.2</mu1>
+                <mu2>0.2</mu2>
+                <kp  value="1000000.0"/>
+                <kd  value="1.0"/>
+            </gazebo>
+
+            <gazebo reference="thigh2_Link">
+                <mu1>0.2</mu1>
+                <mu2>0.2</mu2>
+                <kp  value="1000000.0"/>
+                <kd  value="1.0"/>
+            </gazebo>
+
+            <gazebo reference="calf2_Link">
+                <mu1>0.2</mu1>
+                <mu2>0.2</mu2>
+                <kp  value="1000000.0"/>
+                <kd  value="1.0"/>
+            </gazebo>
+
+            <gazebo reference="wheel2_Link">
+                <mu1>0.2</mu1>
+                <mu2>0.2</mu2>
+                <kp  value="1000000.0"/>
+                <kd  value="1.0"/>
+            </gazebo>
+
             <joint name="joint1">
                 <command_interface name="position"/>
                 <!-- <command_interface name="effort"/> -->
 
                 <state_interface name="position"/>
                 <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">6.2</param>
+                <param name="initial_position">0.0</param>
             </joint>
 
             <joint name="joint2">
@@ -44,7 +128,7 @@
 
                 <state_interface name="position"/>
                 <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">6.2</param>
+                <param name="initial_position">0.0</param>
             </joint>
 
             <joint name="joint5">
@@ -67,13 +151,6 @@
                 <param name="initial_position">0.0</param>
             </joint>
         </ros2_control>
-
-            <!-- Gazebo 插件 -->
-        <gazebo>
-            <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-            <parameters>$(find balance_description)/config/controller.yaml</parameters>
-            </plugin>
-        </gazebo>
 
     </xacro:macro>
 </robot>
