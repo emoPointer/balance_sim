@@ -43,72 +43,61 @@
             
 
             <joint name="joint1">
-                <command_interface name="position"/>
-                <!-- <command_interface name="effort"/> -->
+                <!-- <command_interface name="position"/> -->
+                <command_interface name="effort">
+                <param name="min">-60</param>
+                <param name="max">60</param>
+                </command_interface>
 
                 <state_interface name="position"/>
-                <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">0.0</param>
-                
-                <param name="min">-0.38</param>
-                <param name="max">1.11</param>
+                <state_interface name="effort"/>
             </joint>
 
             <joint name="joint2">
-                <command_interface name="position"/>
-                <!-- <command_interface name="effort"/> -->
+                <!-- <command_interface name="position"/> -->
+                <command_interface name="effort">
+                <param name="min">-60</param>
+                <param name="max">60</param>
+                </command_interface>
 
                 <state_interface name="position"/>
-                <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">0.0</param>
-                <param name="min">-1.28</param>
-                <param name="max">0..46</param>
+                <state_interface name="effort"/>
             </joint>
 
             <joint name="joint3">
-                <command_interface name="position"/>
-                <!-- <command_interface name="velocity"/> -->
-                <!-- <command_interface name="effort"/> -->
+                <command_interface name="velocity"/>
 
-                <state_interface name="position"/>
-                <!-- <state_interface name="velocity"/> -->
-                <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">0.0</param>
+                <state_interface name="velocity"/>
             </joint>
 
             <joint name="joint4">
-                <command_interface name="position"/>
+                <!-- <command_interface name="position"/> -->
                 <!-- <command_interface name="effort"/> -->
+                <command_interface name="effort">
+                <param name="min">-60</param>
+                <param name="max">60</param>
+                </command_interface>
 
                 <state_interface name="position"/>
-                <!-- <state_interface name="effort"/> -->
+                <state_interface name="effort"/>
                 <!-- <param name="initial_position">0.0</param> -->
-                <param name="min">-0.83</param>
-                <param name="max">0.67</param>
             </joint>
 
             <joint name="joint5">
-                <command_interface name="position"/>
-                <!-- <command_interface name="effort"/> -->
+                <!-- <command_interface name="position"/> -->
+                <command_interface name="effort">
+                <param name="min">-60</param>
+                <param name="max">60</param>
+                </command_interface>
 
                 <state_interface name="position"/>
-                <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">0.0</param>
-                <param name="min">-0.68</param>
-                <param name="max">1.06</param>
+                <state_interface name="effort"/>
             </joint>
 
             <joint name="joint6">
-                <command_interface name="position"/>
-                <!-- <command_interface name="velocity"/> -->
-                <!-- <command_interface name="effort"/> -->
+                <command_interface name="velocity"/>
 
-                <state_interface name="position"/>
-                <!-- <state_interface name="velocity"/> -->
-                <!-- <state_interface name="effort"/> -->
-                <param name="initial_position">0.0</param>
-                <param name="min">-1</param>
-                <param name="max">1</param>
+                <state_interface name="velocity"/>
             </joint>
         </ros2_control>
 
@@ -120,7 +109,7 @@
 
             <gazebo reference="base_link">
                 <!-- <material>Gazebo/Green</material> -->
-                <turnGravityOff>true</turnGravityOff>
+                <turnGravityOff>false</turnGravityOff>
             </gazebo>
 
             <gazebo reference="thigh1_Link">
@@ -128,7 +117,7 @@
                 <mu2>0.2</mu2>
                 <kp  value="100000.0"/>
                 <kd  value="1000.0"/>
-                <turnGravityOff>true</turnGravityOff>
+                <turnGravityOff>false</turnGravityOff>
             </gazebo>
 
             <gazebo reference="calf1_Link">
@@ -136,7 +125,7 @@
                 <mu2>0.2</mu2>
                 <kp  value="100000.0"/>
                 <kd  value="1000.0"/>
-                <turnGravityOff>true</turnGravityOff>
+                <turnGravityOff>false</turnGravityOff>
             </gazebo>
 
             <gazebo reference="wheel1_Link">
@@ -144,7 +133,7 @@
                 <mu2>0.2</mu2>
                 <kp  value="100000.0"/>
                 <kd  value="1000.0"/>
-                <turnGravityOff>true</turnGravityOff>
+                <turnGravityOff>false</turnGravityOff>
             </gazebo>
 
             <gazebo reference="thigh2_Link">
@@ -152,7 +141,7 @@
                 <mu2>0.2</mu2>
                 <kp  value="100000.0"/>
                 <kd  value="1000.0"/>
-                <turnGravityOff>true</turnGravityOff>
+                <turnGravityOff>false</turnGravityOff>
             </gazebo>
 
             <gazebo reference="calf2_Link">
@@ -160,7 +149,7 @@
                 <mu2>0.2</mu2>
                 <kp  value="100000.0"/>
                 <kd  value="1000.0"/>
-                <turnGravityOff>true</turnGravityOff>
+                <turnGravityOff>false</turnGravityOff>
             </gazebo>
 
             <gazebo reference="wheel2_Link">
@@ -168,7 +157,7 @@
                 <mu2>0.2</mu2>
                 <kp  value="100000.0"/>
                 <kd  value="1000.0"/>
-                <turnGravityOff>true</turnGravityOff>
+                <turnGravityOff>false</turnGravityOff>
             </gazebo>
 
     </xacro:macro>

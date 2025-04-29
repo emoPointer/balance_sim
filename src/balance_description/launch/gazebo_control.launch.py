@@ -14,7 +14,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "gui_rviz",
-            default_value="true",
+            default_value="false",
             description="Start RViz2 automatically with this launch file.",
         )
     )
@@ -82,10 +82,22 @@ def generate_launch_description():
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
-    robot_controller_spawner = Node(
+    position_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["forward_position_controller", "--controller-manager", "/controller_manager"],
+        arguments=["position_controller", "--controller-manager", "/controller_manager"],
+    )
+
+    effort_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["effort_controller", "--controller-manager", "/controller_manager"],
+    )
+
+    velocity_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["velocity_controller", "--controller-manager", "/controller_manager"],
     )
 
     initial_command_publisher = TimerAction(
@@ -117,8 +129,10 @@ def generate_launch_description():
         node_robot_state_publisher,
         spawn_entity,
         joint_state_broadcaster_spawner,
-        robot_controller_spawner,
-        initial_command_publisher,
+        # position_controller_spawner,
+        effort_controller_spawner,
+        velocity_controller_spawner,
+        # initial_command_publisher,
         rviz_node,
     ]
 
